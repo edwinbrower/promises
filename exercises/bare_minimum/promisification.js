@@ -56,7 +56,21 @@ var readFileAndMakeItFunny = function(filePath, callback) {
   });
 };
 
-var readFileAndMakeItFunnyAsync = Promise.promisify(readFileAndMakeItFunny);
+var readFileAndMakeItFunnyAsync = function(filePath) {
+  return new Promise(function(resolve, reject) {
+    fs.readFile(filePath, 'utf8', function(err, file) {
+      if (err) { return reject(err); }
+     
+      var funnyFile = file.split('\n')
+        .map(function(line) {
+          return line + ' lol';
+        })
+        .join('\n');
+
+      resolve(funnyFile);
+    });
+  });
+};
 
 // Export these functions so we can test them and reuse them in later exercises
 module.exports = {
